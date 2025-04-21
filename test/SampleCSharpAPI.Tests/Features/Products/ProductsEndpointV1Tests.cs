@@ -53,7 +53,7 @@ namespace SampleCSharpAPI.Features.Products.Tests
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var products = await response.Content.ReadFromJsonAsync<List<Product>>();
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>();
             Assert.IsNotNull(products);
             Assert.IsTrue(products.Count > 0);
         }
@@ -72,7 +72,7 @@ namespace SampleCSharpAPI.Features.Products.Tests
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var returnedProduct = await response.Content.ReadFromJsonAsync<Product>();
+            var returnedProduct = await response.Content.ReadFromJsonAsync<ProductDto>();
             Assert.IsNotNull(returnedProduct);
             Assert.AreEqual(product.Name, returnedProduct.Name);
         }
@@ -98,7 +98,7 @@ namespace SampleCSharpAPI.Features.Products.Tests
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            var createdProduct = await response.Content.ReadFromJsonAsync<Product>();
+            var createdProduct = await response.Content.ReadFromJsonAsync<ProductDto>();
             Assert.IsNotNull(createdProduct);
             Assert.AreEqual(productDto.Name, createdProduct.Name);
         }

@@ -13,7 +13,7 @@ public static class ProductsEndpointV1
     {
         app.MapGet("/api/products", async (ProductsDbContext db) =>
         {
-            return await db.Products.ToListAsync();
+            return await db.Products.Select(p => new ProductDto(p.Id, p.Name, p.Price)).ToListAsync();
         })
         .Produces<List<Product>>(StatusCodes.Status200OK)
         .WithTags(ProductsTag);
@@ -22,7 +22,7 @@ public static class ProductsEndpointV1
         {
             return await db.Products.FindAsync(id)
                 is Product product
-                    ? Results.Ok(product)
+                    ? Results.Ok(new ProductDto(product.Id, product.Name, product.Price))
                     : Results.NotFound("Product not found.");
         })
         .Produces<Product>(StatusCodes.Status200OK)
@@ -39,7 +39,7 @@ public static class ProductsEndpointV1
 
             db.Products.Add(product);
             await db.SaveChangesAsync();
-            return Results.Created($"/products/{product.Id}", product);
+            return Results.Created($"/products/{product.Id}", new ProductDto(product.Id, product.Name, product.Price));
         })
         .Produces<Product>(StatusCodes.Status201Created)
         .WithTags(ProductsTag);
